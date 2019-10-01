@@ -10,7 +10,7 @@ namespace NerdStore.Vendas.Domain
         // Como a classe Pedido é uma raiz de agregação, pode deixar especificado a quantidade aqui mesmo;
         public static int MAX_UNIDADES_ITEM => 15;
         public static int MIN_UNIDADES_ITEM => 1;
-        
+
         protected Pedido()
         {
             _pedidoItems = new List<PedidoItem>();
@@ -35,6 +35,11 @@ namespace NerdStore.Vendas.Domain
         private bool PedidoItemExistente(PedidoItem item)
         {
             return _pedidoItems.Any(p => p.ProdutoId == item.ProdutoId);
+        }
+
+        private void ValidarPedidoItemInexistente(PedidoItem item)
+        {
+            if (!PedidoItemExistente(item)) throw new DomainException("O item não pertence ao pedido");
         }
 
         private void ValidarQuantidadeItemPermitida(PedidoItem item)
@@ -63,6 +68,19 @@ namespace NerdStore.Vendas.Domain
             }
 
             _pedidoItems.Add(pedidoItem);
+            CalcularValorPedido();
+        }
+
+        public void AtualizarItem(PedidoItem pedidoItem)
+        {
+            ValidarPedidoItemInexistente(pedidoItem);
+            ValidarQuantidadeItemPermitida(pedidoItem);
+
+            var itemExistente = PedidoItems.FirstOrDefault(p => p.ProdutoId == pedidoItem.ProdutoId);
+
+            _pedidoItems.Remove(itemExistente);
+            _pedidoItems.Add(pedidoItem);
+
             CalcularValorPedido();
         }
 
