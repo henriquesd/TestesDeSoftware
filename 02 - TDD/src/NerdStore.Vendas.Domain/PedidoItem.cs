@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NerdStore.Core.DomainObjects;
+using System;
 
 namespace NerdStore.Vendas.Domain
 {
@@ -11,6 +12,10 @@ namespace NerdStore.Vendas.Domain
 
         public PedidoItem(Guid produtoId, string produtoNome, int quantidade, decimal valorUnitario)
         {
+            // A classe PedidoItem é uma classe filha, então ela pode depender da classe mãe para validar as unidades que ela quer aceitar como mínimo;
+            // É responsabilidade da própria entidade não permitir estar em estado inválido;
+            if (quantidade < Pedido.MIN_UNIDADES_ITEM) throw new DomainException($"Mínimo de {Pedido.MIN_UNIDADES_ITEM} unidades por produto");
+
             ProdutoId = produtoId;
             ProdutoNome = produtoNome;
             Quantidade = quantidade;

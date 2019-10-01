@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NerdStore.Core.DomainObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,6 +7,10 @@ namespace NerdStore.Vendas.Domain
 {
     public class Pedido
     {
+        // Como a classe Pedido é uma raiz de agregação, pode deixar especificado a quantidade aqui mesmo;
+        public static int MAX_UNIDADES_ITEM => 15;
+        public static int MIN_UNIDADES_ITEM => 1;
+        
         protected Pedido()
         {
             _pedidoItems = new List<PedidoItem>();
@@ -22,13 +27,15 @@ namespace NerdStore.Vendas.Domain
         private readonly List<PedidoItem> _pedidoItems;
         public IReadOnlyCollection<PedidoItem> PedidoItems => _pedidoItems;
 
-        public void CalcularValorPedido()
+        private void CalcularValorPedido()
         {
             ValorTotal = PedidoItems.Sum(i => i.CalcularValor());
         }
 
         public void AdicionarItem(PedidoItem pedidoItem)
         {
+            if (pedidoItem.Quantidade > MAX_UNIDADES_ITEM) throw new DomainException($"Máximo de {MAX_UNIDADES_ITEM} unidades por produto");
+
             if (_pedidoItems.Any(p => p.ProdutoId == pedidoItem.ProdutoId))
             {
                 var itemExistente = _pedidoItems.FirstOrDefault(p => p.ProdutoId == pedidoItem.ProdutoId);
