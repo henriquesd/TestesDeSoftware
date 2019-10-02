@@ -49,3 +49,18 @@ dotnet vstest Features.Tests.dll
 ```
 install-package fluentvalidation
 ```
+
+### MOQ (02 - TDD\Tests\NerdStore.Vendas.Application.Tests)
+```
+install-package MOQ
+```
+
+### AutoMock (02 - TDD\Tests\NerdStore.Vendas.Application.Tests)
+```
+install-package MOQ.automock
+```
+
+### MediatR no projeto Core (02 - TDD\NerdStore.Core)
+```
+install-package Mediatr
+```
