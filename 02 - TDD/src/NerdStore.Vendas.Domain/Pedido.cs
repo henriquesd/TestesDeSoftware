@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace NerdStore.Vendas.Domain
 {
-    public class Pedido : Entity
+    public class Pedido : Entity, IAggregateRoot
     {
         // Como a classe Pedido é uma raiz de agregação, pode deixar especificado a quantidade aqui mesmo;
         public static int MAX_UNIDADES_ITEM => 15;
