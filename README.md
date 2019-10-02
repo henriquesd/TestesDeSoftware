@@ -44,3 +44,8 @@ Install-Package xunit.runner.console
 ```
 dotnet vstest Features.Tests.dll
 ```
+
+### Framework Fluent Validation no projeto Core (02 - TDD\NerdStore.Core)
+```
+install-package fluentvalidation
+```
